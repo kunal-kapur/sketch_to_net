@@ -13,9 +13,10 @@ export default function Home() {
   return (
   <section className="w-full">
     <NodeContext.Provider value={[nodes, setNodes]}>
+
     <Navbar/>
     
-    <DroppableArea nodes={nodes}>
+    <DroppableArea>
     </DroppableArea>
     </NodeContext.Provider>
 
