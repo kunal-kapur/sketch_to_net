@@ -5,20 +5,21 @@ import DraggableNode from "./DraggableNode";
 import { DroppableArea } from "./DroppableArea";
 import React, { useState, createContext } from 'react';
 
-export const NodeContext: any = createContext(null);
+export const NodeAndArrowContext: any = createContext(null);
 
 export default function Home() {
   const [nodes, setNodes] = useState<any>([]);
+  const [arrows, setArrows]: any = useState<any>([])
 
   return (
   <section className="w-full">
-    <NodeContext.Provider value={[nodes, setNodes]}>
+    <NodeAndArrowContext.Provider value={[nodes, setNodes, arrows, setArrows]}>
 
     <Navbar/>
     
     <DroppableArea>
     </DroppableArea>
-    </NodeContext.Provider>
+    </NodeAndArrowContext.Provider>
 
 
   </section>

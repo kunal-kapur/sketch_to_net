@@ -1,7 +1,7 @@
 import { DroppableArea } from "./DroppableArea"
 import DraggableNode from "./DraggableNode"
 import { useState, useContext,  } from "react";
-import { NodeContext } from "./page";
+import { NodeAndArrowContext } from "./page";
 
 interface NarbarProps {
     action: any;
@@ -9,12 +9,15 @@ interface NarbarProps {
 
 export default function Navbar() {
 
-    const [nodes, setNodes]: any= useContext(NodeContext);
+  let [nodes, setNodes, arrows, setArrows]: any = useContext(NodeAndArrowContext)
+
+
+    // const [nodes, setNodes]: any= useContext(NodeAndArrowContext);
     const [currId, setCurrId] =  useState(1)
     const addNode = (name: string) => {
       const newNode = {
         name: name,
-        id: currId
+        id: currId.toString()
       };
       setCurrId(currId + 1)
   
