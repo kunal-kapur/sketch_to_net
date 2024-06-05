@@ -24,7 +24,7 @@ export function DroppableArea() {
     const createArrowArr=()=>{
         console.log(arrows)
         const val = arrows.map((x: any)=>{
-        return <Xarrow start={x[1]} end={x[0]}></Xarrow>;
+        return <Xarrow start={x[0]} end={x[1]}></Xarrow>;
         })
         return val;
 

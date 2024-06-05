@@ -27,8 +27,21 @@ export default function Navbar() {
     return(
         <section className="flex justify-around w-screen p-0 my-3">
         <button className={buttonClass}
-        
-        onClick={()=>addNode("Linear Layer")}>Linear Layer</button>
-        <button className={buttonClass} onClick={()=>addNode("Convolutional Layer")}>Convolutional Layer</button>
+          onClick={()=>addNode("Input Layer")}>Input Layer
+        </button>
+        <button className={buttonClass}
+          onClick={()=>addNode("Linear Layer")}>Linear Layer
+        </button>
+        <button className={buttonClass} onClick={()=>addNode("Convolutional Layer")}>
+            Convolutional Layer
+        </button>
+        <button className={buttonClass} onClick={()=>addNode("Activation Function")}>
+            Acitvation Function
+        </button>
+        <button className={buttonClass} onClick={()=>addNode("Loss Function")}>
+            Loss Function
+        </button>
+
+
         </section>)
 }
