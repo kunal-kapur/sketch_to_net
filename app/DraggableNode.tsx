@@ -5,40 +5,44 @@ import { useContext } from 'react';
 import { NodeAndArrowContext } from './page';
 import { useXarrow } from 'react-xarrows';
 import { useDrag, useDrop } from 'react-dnd';
-import { render, fireEvent } from '@testing-library/react';
 import { useState } from 'react';
 import { useRef } from 'react';
 
-interface NodeProps{
+export interface NodeProps{
   name: string;
   id: string;
+  nodeAttributes: {}
 }
-
-
 
 const attachString: string = 'w-8 h-8 rounded-full bg-yellow-100 transition ease-in-out hover:bg-yellow-300 duration-300';
 
 
-function InputLayer() {
+function InputLayer(node: NodeProps) {
+  const [size, setSize] = useState(10);
+  const changeSize = (event: any) => (setSize(event.target.value))
+  node.nodeAttributes= {'size': size};
   return (
     <div className='flex flex-col items-center'>
       <div>{"Input Layer"}</div>
-      <input className='text-center w-8/12 rounded' type='number' min={1}></input>
+      <input className='text-center w-8/12 rounded'onChange={changeSize} type='number' min={size}></input>
     </div>    
   )
 }
 
-function LinearNode() {
+function LinearNode(node: any) {
+  const [size, setSize] = useState(10);
+  const changeSize = (event: any) => (setSize(event.target.value))
+  node.nodeAttributes= {'size': size};
   return (
     <div className='flex flex-col items-center'>
       <div>{"Linear Layer"}</div>
-      <input className='text-center w-8/12 rounded' type='number' min={1}></input>
+      <input className='text-center w-8/12 rounded' onChange={changeSize} type='number' min={size}></input>
     </div>    
   )
 }
 
 
-function ConvolutionalNode() {
+function ConvolutionalNode(node: any) {
   return (
     <div className='flex flex-col items-center'>
       <div>{"Convolutional Layer"}</div>
@@ -48,21 +52,17 @@ function ConvolutionalNode() {
 }
 
 
-function ActivationFunction() {
-  const [selectedItem, setSelectedItem] = useState('');
-
-  const handleChange = (event: any) => {
-    setSelectedItem(event.target.value);
-  };
-
-  
+function ActivationFunction(node: any) {
+  const [functionType, setFunction] = useState('');
+  const changeFunction = (event: any) => (setFunction(event.target.value))
+  node.nodeAttributes= {'function': functionType};
 
   return (
     <div className="flex flex-col items-center">
       <div className="mb-4 pt-2">
         <select
           className="text-center px-4 py-2 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={handleChange}
+          onChange={changeFunction}
           defaultValue=""
         >
           <option className="text-xl" value="" disabled>Activation Function</option>
@@ -76,18 +76,17 @@ function ActivationFunction() {
 
 }
 
-function LossFunction() {
-  const [selectedItem, setSelectedItem] = useState('');
+function LossFunction(node: any) {
+  const [functionType, setFunction] = useState('');
+  const changeFunction = (event: any) => (setFunction(event.target.value))
+  node.nodeAttributes= {'function': functionType};
 
-  const handleChange = (event: any) => {
-    setSelectedItem(event.target.value);
-  };
   return (
     <div className="flex flex-col items-center">
       <div className="mb-4 pt-2">
         <select
           className="text-center px-4 py-2 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={handleChange}
+          onChange={changeFunction}
           defaultValue=""
         >
           <option className="text-xl" value="" disabled>Loss</option>
@@ -101,30 +100,27 @@ function LossFunction() {
 
 }
 
-function decipherNode(name: string) {
+function decipherNode(node: any) {
+  const name = node.name
   if (name == "Linear Layer") {
-    return LinearNode();
+    return LinearNode(node);
   }
   if (name == "Convolutional Layer") {
-    return ConvolutionalNode();
+    return ConvolutionalNode(node);
   }
   if (name == "Activation Function") {
-    return ActivationFunction();
+    return ActivationFunction(node);
   }
   if (name == "Loss Function") {
-    return LossFunction();
+    return LossFunction(node);
   }
   if (name == "Input Layer") {
-    return InputLayer();
+    return InputLayer(node);
   }
 }
 
-export default function DraggableNode({name, id}: NodeProps) {
+export default function DraggableNode({name, id, nodeAttributes}: NodeProps) {
   let [nodes, setNodes, arrows, setArrows]: any = useContext(NodeAndArrowContext)
-  const elementRef = useRef(null);
-
-
-
   const removeNode = (id: string)=> {
     const newNodes = [];
     for (let i = 0; i < nodes.length; i++) {
@@ -162,17 +158,19 @@ export default function DraggableNode({name, id}: NodeProps) {
   ))
   const updateXarrow = useXarrow();
 
-  const nodeType = decipherNode(name);
+  const currentNode = nodes.find((x: any) => x.id === id);
+
+  const nodeType = decipherNode(currentNode);
 
   return (
-        <Draggable onDrag={updateXarrow} onStop={updateXarrow}>
+        <Draggable disabled={false} onDrag={updateXarrow} onStop={updateXarrow}>
           <div ref={dropRef} id={id} className="fixed flex flex-col bg-green-300 w-fit h-30 text-center pb-10 rounded">
             <button onClick={()=>removeNode(id)} text-sm className='self-end right bg-red-300 w-1/12 rounded-full hover:bg-red-500 duration-300'>x</button>
             <div 
             className="flex justify-between">
-              <div draggable={false} className={attachString}></div>
+              <div  className={attachString}></div>
               {nodeType}
-              <div draggable={false} ref={dragSource} className={attachString} ></div>
+              <div  ref={dragSource} className={attachString} ></div>
             </div>
           </div>
         </Draggable>
