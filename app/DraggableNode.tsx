@@ -14,8 +14,8 @@ export interface NodeProps{
   nodeAttributes: {}
 }
 
-const attachString: string = 'w-8 h-8 rounded-full bg-yellow-100 transition ease-in-out hover:bg-yellow-300 duration-300';
 
+const attachString: string = 'w-8 h-8 rounded-full bg-yellow-100 transition ease-in-out hover:bg-yellow-300 duration-300';
 
 function InputLayer(node: NodeProps) {
   const [size, setSize] = useState(10);

@@ -3,12 +3,30 @@ import DraggableNode, { NodeProps } from "./DraggableNode"
 import { useState, useContext,  } from "react";
 import { NodeAndArrowContext } from "./page";
 
+function cleanNodes(nodes: NodeProps[]) {
 
-function sendDrawing(nodes: [NodeProps]) {
-  nodes.forEach((element: NodeProps) => {
-    console.log(element)
-    
+  const newNodes: NodeProps[] = []
+  nodes.forEach(node => {
+    if (node.id != '0') {
+      newNodes.push(node)
+    }
   });
+  return newNodes;
+
+}
+
+async function sendDrawing(nodes: NodeProps[], arrows: [[string, string]]) {
+  console.log(nodes)
+  const response = await fetch("http://127.0.0.1:5328/submission", {
+  method: "POST",
+  headers: {
+  'Content-Type' : 'application/json'
+  },
+  body: JSON.stringify({"nodes": cleanNodes(nodes), "arrows": arrows})
+  })
+  if (response.ok){
+  console.log("it worked")
+  }
 }
 
 export default function Navbar() {
@@ -48,7 +66,7 @@ export default function Navbar() {
               Loss Function
           </button>
           </section>
-        <button onClick={()=>sendDrawing(nodes)} className={"bg-indigo-200 h-fit w-2/12 px-8 rounded-lg hover:bg-indigo-400 transition ease-in-out duration-3000 py-5 self-center my-3"}>
+        <button onClick={()=>sendDrawing(nodes, arrows)} className={"bg-indigo-200 h-fit w-2/12 px-8 rounded-lg hover:bg-indigo-400 transition ease-in-out duration-3000 py-5 self-center my-3"}>
           Submit</button>
       </section >
         )
