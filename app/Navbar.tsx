@@ -1,7 +1,8 @@
-import { DroppableArea } from "./DroppableArea"
 import DraggableNode, { NodeProps } from "./DraggableNode"
 import { useState, useContext,  } from "react";
 import { NodeAndArrowContext } from "./page";
+import { useRouter } from 'next/navigation';
+// import { redirect } from 'next/redirect';
 
 function cleanNodes(nodes: NodeProps[]) {
 
@@ -15,23 +16,40 @@ function cleanNodes(nodes: NodeProps[]) {
 
 }
 
-async function sendDrawing(nodes: NodeProps[], arrows: [[string, string]]) {
-  console.log(nodes)
-  const response = await fetch("http://127.0.0.1:5328/submission", {
-  method: "POST",
-  headers: {
-  'Content-Type' : 'application/json'
-  },
-  body: JSON.stringify({"nodes": cleanNodes(nodes), "arrows": arrows})
-  })
-  if (response.ok){
-  console.log("it worked")
-  }
-}
 
 export default function Navbar() {
 
   let [nodes, setNodes, arrows, setArrows]: any = useContext(NodeAndArrowContext)
+  const router = useRouter();
+
+    const sendDrawing = async() => {
+    console.log(nodes)
+    const response = await fetch("http://127.0.0.1:5328/submission", {
+    method: "POST",
+    headers: {
+    'Content-Type' : 'application/json'
+    },
+    body: JSON.stringify({"nodes": cleanNodes(nodes), "arrows": arrows})
+    })
+  
+    // TODO error checking 
+    if (response.ok){
+    console.log("it worked")
+    }
+    const data = await response.json();
+    // console.log(encodeURI(data['output']));
+    // console.log(decodeURI(encodeURI(data['output'])))
+    let outString = data['output']
+    console.log(outString)
+    // outString = outString.replace(/\n/g, '<newline>');
+    // const encodedString = btoa(data['output'])
+    const encodedString = encodeURIComponent(outString)
+    console.log(encodedString)
+    // console.log("DECODED", atob(encodedString))
+    router.push(`/results/${encodedString}`);
+    // redirect("/results", {query: {name: 'Jeff'}})
+  }
+
 
 
     // const [nodes, setNodes]: any= useContext(NodeAndArrowContext);
@@ -66,7 +84,7 @@ export default function Navbar() {
               Loss Function
           </button>
           </section>
-        <button onClick={()=>sendDrawing(nodes, arrows)} className={"bg-indigo-200 h-fit w-2/12 px-8 rounded-lg hover:bg-indigo-400 transition ease-in-out duration-3000 py-5 self-center my-3"}>
+        <button onClick={sendDrawing} className={"bg-indigo-200 h-fit w-2/12 px-8 rounded-lg hover:bg-indigo-400 transition ease-in-out duration-3000 py-5 self-center my-3"}>
           Submit</button>
       </section >
         )

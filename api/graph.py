@@ -6,7 +6,7 @@ class Node():
         self.name = name
         self.id = id
         self.neighbors = []
-        self.attributes = {}
+        self.attributes = attrs
 
 class Graph: 
 
@@ -18,9 +18,7 @@ class Graph:
     def __extract_nodes(self, nodes, arrows):
         new_node_list: List[Node] = []
         for node_attrs in nodes:
-
             name = node_attrs.get('name', '')
-
             id = int(node_attrs.get('id', 0))
             attrs = node_attrs.get('nodeAttributes', {})
             created_node = Node(name=name, id=id, attrs=attrs)
