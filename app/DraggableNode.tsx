@@ -2,7 +2,7 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 import { useContext } from 'react';
-import { NodeAndArrowContext } from './page';
+import { NodeAndArrowContext } from './NodeArrowContext';
 import { useXarrow } from 'react-xarrows';
 import { useDrag, useDrop } from 'react-dnd';
 import { useState } from 'react';
@@ -120,7 +120,8 @@ function decipherNode(node: any) {
 }
 
 export default function DraggableNode({name, id, nodeAttributes}: NodeProps) {
-  let [nodes, setNodes, arrows, setArrows]: any = useContext(NodeAndArrowContext)
+  let x: any = NodeAndArrowContext
+  let [nodes, setNodes, arrows, setArrows]: [NodeProps[], any, [string, string][], any] = useContext(x)
   const removeNode = (id: string)=> {
     const newNodes = [];
     for (let i = 0; i < nodes.length; i++) {
@@ -132,8 +133,8 @@ export default function DraggableNode({name, id, nodeAttributes}: NodeProps) {
       }
     }
     setNodes(newNodes);
-    const newArrows: [] = []
-    arrows.forEach((pair: [])=>{
+    const newArrows: [string, string][] = []
+    arrows.forEach((pair: [string, string])=>{
       if (!pair.includes(id)) {
         newArrows.push(pair)
       }

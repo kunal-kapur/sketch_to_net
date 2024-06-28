@@ -2,7 +2,7 @@
 import DraggableNode from './DraggableNode';
 import { ZombieNode } from './DraggableNode';
 import { useContext, useState } from 'react';
-import { NodeAndArrowContext } from './page';
+import { NodeAndArrowContext } from './NodeArrowContext';
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -13,18 +13,19 @@ import { NodeProps } from 'postcss';
 export const ArrowContext: any = createContext(null);
 
 export function DroppableArea() {
-    let [nodes, setNodes, arrows, setArrows]: any = useContext(NodeAndArrowContext)
+    let x: any = NodeAndArrowContext
+    let [nodes, setNodes, arrows, setArrows]: [NodeProps[], any, [string, string][], any] = useContext(x)
 
     let arr = nodes.map((x:any)=>{
         if (x.id == 0) {
-            return (<ZombieNode name={''} id={"0"} nodeAttributes={{}}/>)
+            return (<ZombieNode key={x.id} name={''} id={"0"} nodeAttributes={{}}/>)
         }
-        return (<DraggableNode name={x.name} id={x.id.toString()} nodeAttributes={{}}/>
+        return (<DraggableNode key={"node"+x.id} name={x.name} id={x.id.toString()} nodeAttributes={{}}/>
     )})
 
     const createArrowArr=()=>{
         const val = arrows.map((x: any)=>{
-        return <Xarrow start={x[0]} end={x[1]}></Xarrow>;
+        return <Xarrow key={"arrow-(" + x[0] + "," + x[1] + ")"} start={x[0]} end={x[1]}></Xarrow>;
         })
         return val;
 

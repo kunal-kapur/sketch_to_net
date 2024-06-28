@@ -1,6 +1,6 @@
 import DraggableNode, { NodeProps } from "./DraggableNode"
 import { useState, useContext,  } from "react";
-import { NodeAndArrowContext } from "./page";
+import { NodeAndArrowContext } from "./NodeArrowContext";
 import { useRouter } from 'next/navigation';
 // import { redirect } from 'next/redirect';
 
@@ -18,8 +18,8 @@ function cleanNodes(nodes: NodeProps[]) {
 
 
 export default function Navbar() {
-
-  let [nodes, setNodes, arrows, setArrows]: any = useContext(NodeAndArrowContext)
+  let x: any = NodeAndArrowContext
+  let [nodes, setNodes, arrows, setArrows]: [NodeProps[], any, [string, string][], any] = useContext(x)
   const router = useRouter();
 
     const sendDrawing = async() => {
@@ -37,22 +37,16 @@ export default function Navbar() {
     console.log("it worked")
     }
     const data = await response.json();
-    // console.log(encodeURI(data['output']));
-    // console.log(decodeURI(encodeURI(data['output'])))
+
     let outString = data['output']
     console.log(outString)
-    // outString = outString.replace(/\n/g, '<newline>');
-    // const encodedString = btoa(data['output'])
+
     const encodedString = encodeURIComponent(outString)
     console.log(encodedString)
-    // console.log("DECODED", atob(encodedString))
+
     router.push(`/results/${encodedString}`);
-    // redirect("/results", {query: {name: 'Jeff'}})
   }
 
-
-
-    // const [nodes, setNodes]: any= useContext(NodeAndArrowContext);
     const [currId, setCurrId] =  useState(1)
     const addNode = (name: string) => {
       const newNode = {
