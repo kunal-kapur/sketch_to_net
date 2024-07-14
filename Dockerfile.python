@@ -1,0 +1,10 @@
+# Stage 1: Python environment
+FROM python:3.11 AS python_builder
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+COPY . .
+
+EXPOSE 8000
+
+CMD ["./start-uwsgi.sh"] 

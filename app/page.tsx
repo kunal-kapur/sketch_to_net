@@ -1,6 +1,5 @@
 'use client';
 import Navbar from "./Navbar";
-import DraggableNode from "./DraggableNode";
 import { DroppableArea } from "./DroppableArea";
 import { NodeAndArrowContext } from "./NodeArrowContext";
 import React, { useState, createContext } from 'react';

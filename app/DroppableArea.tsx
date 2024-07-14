@@ -7,7 +7,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createContext } from 'react';
-import { NodeProps } from 'postcss';
+import { NodeProps } from './DraggableNode';
 
 
 export const ArrowContext: any = createContext(null);

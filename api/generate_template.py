@@ -2,8 +2,12 @@ from pathlib import Path
 from jinja2 import Template
 from layers import LinearLayer, ActivationFunction
 import errors
+import os
 
-template_str = Path('api/template.py').read_text()
+
+# safe way to get the path of something when directory changes via running pyhton script
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+template_str = Path(f"{__location__}/template.py").read_text()
 
 template = Template(template_str)
 

@@ -1,7 +1,6 @@
 
 #Show as a .py file to make it easier to view syntax 
 
-
 import torch.nn as nn
 
 # Define the neural network model

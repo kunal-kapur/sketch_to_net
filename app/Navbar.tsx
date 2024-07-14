@@ -24,7 +24,7 @@ export default function Navbar() {
 
     const sendDrawing = async() => {
     console.log(nodes)
-    const response = await fetch("http://127.0.0.1:5328/submission", {
+    const response = await fetch("http://0.0.0.0:8000/submission", {
     method: "POST",
     headers: {
     'Content-Type' : 'application/json'
@@ -43,7 +43,6 @@ export default function Navbar() {
 
     const encodedString = encodeURIComponent(outString)
     console.log(encodedString)
-
     router.push(`/results/${encodedString}`);
   }
 
@@ -58,7 +57,7 @@ export default function Navbar() {
   
       setNodes([...nodes, newNode]);
     };
-    const buttonClass: string = "bg-violet-100 h-fit w-2/12 px-8 rounded-lg transition ease-in-out hover:bg-violet-200 duration-500 py-5" 
+    const buttonClass: string = "bg-indigo-100 h-fit w-2/12 px-8 rounded-lg transition ease-in-out hover:bg-indigo-200 duration-500 py-5" 
     return(
       <section className="flex flex-col items-center justify-center">
           <section className="flex justify-around w-screen p-0 my-3">
